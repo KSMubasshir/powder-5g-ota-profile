@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 """Generate the outdoor 5G allocation and its ordered startup services."""
 import os
@@ -16,7 +16,7 @@ tourDescription = """
 ### Outdoor 5G measurement network
 Allocates an Open5GS core, dense-site B210 gNodeBs and fixed COTS UE endpoints.
 Defaults select Mario, Guest House and USTAR, plus EBC, Moran and Guest House
-fixed endpoints, and request 3430–3450 MHz. The gNodeBs do not start at boot.
+fixed endpoints, and request 3430-3450 MHz. The gNodeBs do not start at boot.
 An approved spectrum and hardware reservation is required before transmission.
 """
 tourInstructions = """
@@ -273,9 +273,9 @@ for left, right in [("cnode-moran", "cnode-ustar"), ("cnode-guesthouse", "cnode-
     if left in selected and right in selected:
         pc.reportWarning(portal.ParameterWarning(
             "Adjacent dense sites {} and {} can interfere.".format(left, right), ["dense_radios"]))
-if not re.fullmatch(r"[0-9a-fA-F]{40}", params.srsran_commit):
+if not re.match(r"[0-9a-fA-F]{40}\Z", params.srsran_commit):
     pc.reportError(portal.ParameterError("Use a full 40-character commit hash.", ["srsran_commit"]))
-if not re.fullmatch(r"[A-Za-z0-9_.-]+", params.dnn):
+if not re.match(r"[A-Za-z0-9_.-]+\Z", params.dnn):
     pc.reportError(portal.ParameterError("Use an APN consisting of letters, digits, dots, hyphens or underscores.", ["dnn"]))
 pc.verifyParameters()
 request = pc.makeRequestRSpec()
