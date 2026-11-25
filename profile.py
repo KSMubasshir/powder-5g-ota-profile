@@ -52,6 +52,10 @@ def gnb_cn_pair(idx, dense_radio):
     nodeb_cn_if = node.addInterface("nodeb-cn-if")
     nodeb_cn_if.addAddress(pg.IPv4Address("192.168.1.{}".format(idx + 2), "255.255.255.0"))
     cn_link.addInterface(nodeb_cn_if)
+    # Declare spectrum per gNodeB: fixed-endpoint nuc1 radios are receive-only,
+    # so the portal refuses a global declaration when they are allocated.
+    for frange in params.freq_ranges:
+        node.requestSpectrum(frange.freq_min, frange.freq_max, 0)
 
     if params.deploy_srsran:
         if params.include_orch:
@@ -302,9 +306,6 @@ for idx, dense_radio in enumerate(params.dense_radios):
 
 for idx, fixed_radio in enumerate(params.fixed_radios):
     fixed_node(idx, fixed_radio)
-
-for frange in params.freq_ranges:
-    request.requestSpectrum(frange.freq_min, frange.freq_max, 0)
 
 if params.include_orch:
     orch = request.RawPC("orch")

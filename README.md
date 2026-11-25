@@ -32,7 +32,7 @@ propagation delay or aligned radio frames. Successful allocation does not guaran
 | --- | --- | --- |
 | `dense_radios[].device` | `cnode-mario`, `cnode-guesthouse`, `cnode-ustar`, in order | Allocates one gNodeB per site; LAN addresses start at `.2` in selection order. Full choices: Mario, Moran, Guesthouse, EBC, USTAR. |
 | `fixed_radios[].fe_id` | `ebc`, `moran`, `guesthouse` | Allocates `nuc1` at each site; also offers WEB, Bookstore, Humanities, Law 73, Madsen, Sage Point and Central Parking Garage. Empty list is allowed. |
-| `freq_ranges[].freq_min`, `.freq_max` | `3430`, `3450` MHz | Spectrum requests, with upstream zero-power argument. Values round to kHz. Changing a request does not retune the supplied radio configuration. |
+| `freq_ranges[].freq_min`, `.freq_max` | `3430`, `3450` MHz | Spectrum requests, declared on each gNodeB node with the upstream zero-power argument (fixed-endpoint nuc1 radios are receive-only, so the portal refuses a global declaration). Values round to kHz. Changing a request does not retune the supplied radio configuration. |
 | `start_gnbs` | `false` | Advanced: explicitly opt into starting the installed gNodeB service at startup. |
 | `deploy_srsran` | `true` | Advanced: deploy the pinned stack, patch, configs and service. Disabling this leaves those to the operator. |
 | `srsran_commit` | `5e6f50a202c6efa671d5b231d7c911dc6c3d86ed` | Advanced: full commit hash. The deployment and its logging were checked against this commit; another commit needs the same checks, and the patch must apply to it. |
@@ -136,7 +136,7 @@ node names and base deployment remain the same. Changes are:
 
 | File | Change and reason |
 | --- | --- |
-| `profile.py` | Entry point compatible with Python 2 and 3 (the portal runs it under Python 2; ASCII only; mobile routes use the upstream `requestAllRoutes()` call unchanged), `GLOBALS`, concise tour, explicit topology defaults, orchestrator default false, advanced pinned commit parameter and format validation, safe APN validation, adjacent-site warnings, and measurement setup after each node's main deployment (including optional routes/orchestrator). Upstream `verifyParameters()` is retained. |
+| `profile.py` | Entry point compatible with Python 2 and 3 (the portal runs it under Python 2; ASCII only; mobile routes use the upstream `requestAllRoutes()` call unchanged), `GLOBALS`, concise tour, explicit topology defaults, orchestrator default false, advanced pinned commit parameter and format validation, safe APN validation, adjacent-site warnings, spectrum declared per gNodeB node instead of upstream's global declaration (the portal rejects a global declaration once receive-only fixed endpoints are allocated), and measurement setup after each node's main deployment (including optional routes/orchestrator). Upstream `verifyParameters()` is retained. |
 | `bin/common.sh` | Sources the new shared setup helpers; upstream directory and repository definitions remain unchanged. |
 | `bin/setup-common.sh` | New shared log/marker functions; noninteractive package environment; markers are success-only. |
 | `bin/deploy-srsran.sh` | Shared logs/markers, strict error handling, quoted hash, retry-safe clone/build/patch, and unconditional service installation after build so the default deployment can run without the orchestrator. Removes an upstream personal-name comment. |
