@@ -136,7 +136,7 @@ node names and base deployment remain the same. Changes are:
 
 | File | Change and reason |
 | --- | --- |
-| `profile.py` | Python 3 entry point (mobile routes use the upstream `requestAllRoutes()` call unchanged), `GLOBALS`, concise tour, explicit topology defaults, orchestrator default false, advanced pinned commit parameter and format validation, safe APN validation, adjacent-site warnings, and measurement setup after each node's main deployment (including optional routes/orchestrator). Upstream `verifyParameters()` is retained. |
+| `profile.py` | Entry point compatible with Python 2 and 3 (the portal runs it under Python 2; ASCII only; mobile routes use the upstream `requestAllRoutes()` call unchanged), `GLOBALS`, concise tour, explicit topology defaults, orchestrator default false, advanced pinned commit parameter and format validation, safe APN validation, adjacent-site warnings, and measurement setup after each node's main deployment (including optional routes/orchestrator). Upstream `verifyParameters()` is retained. |
 | `bin/common.sh` | Sources the new shared setup helpers; upstream directory and repository definitions remain unchanged. |
 | `bin/setup-common.sh` | New shared log/marker functions; noninteractive package environment; markers are success-only. |
 | `bin/deploy-srsran.sh` | Shared logs/markers, strict error handling, quoted hash, retry-safe clone/build/patch, and unconditional service installation after build so the default deployment can run without the orchestrator. Removes an upstream personal-name comment. |
